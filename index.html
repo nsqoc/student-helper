@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد طلاب الحاسب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Tajawal:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .tool-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .code-input {
+            font-family: 'Fira Code', monospace;
+            background: #f8fafc;
+        }
+
+        button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            word-break: break-all;
+        }
+
+        /* Reference Cards */
+        .reference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .reference-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-right: 4px solid #2563eb;
+        }
+
+        .reference-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .reference-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Resources */
+        .resource-category {
+            margin-bottom: 2rem;
+        }
+
+        .resource-category h3 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.5rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .resource-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .resource-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .resource-item:hover {
+            transform: translateX(5px);
+        }
+
+        .resource-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Color Picker */
+        .color-display {
+            width: 100px;
+            height: 50px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        /* QR Code */
+        #qrcode {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* JSON Validator */
+        .json-valid {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .json-invalid {
+            color: #dc2626;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1>🖥️ مساعد طلاب الحاسب</h1>
+                    <p class="subtitle">أدوات ومصادر شاملة لطلاب علوم الحاسب</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('tools')">🛠️ الأدوات</button>
+                <button class="nav-tab" onclick="showSection('references')">📚 المراجع السريعة</button>
+                <button class="nav-tab" onclick="showSection('converters')">🔄 أدوات التحويل</button>
+                <button class="nav-tab" onclick="showSection('resources')">🌐 المصادر التعليمية</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Tools Section -->
+            <section id="tools" class="section active">
+                <div class="tools-grid">
+                    <!-- Programming Calculator -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">حاسبة البرمجة</h3>
+                        <p class="tool-description">تحويل بين الأنظمة العددية المختلفة</p>
+                        <div class="form-group">
+                            <label>الرقم:</label>
+                            <input type="text" id="numberInput" placeholder="أدخل الرقم">
+                        </div>
+                        <div class="form-group">
+                            <label>النظام الحالي:</label>
+                            <select id="fromBase">
+                                <option value="10">عشري (Decimal)</option>
+                                <option value="2">ثنائي (Binary)</option>
+                                <option value="8">ثماني (Octal)</option>
+                                <option value="16">سادس عشر (Hexadecimal)</option>
+                            </select>
+                        </div>
+                        <button onclick="convertNumber()">تحويل</button>
+                        <div id="numberResult" class="result" style="display: none;"></div>
+                    </div>
+
+                    <!-- Password Generator -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">مولد كلمات المرور</h3>
+                        <p class="tool-description">إنشاء كلمات مرور قوية وآمنة</p>
+                        <div class="form-group">
+                            <label>طول كلمة المرور:</label>
+                            <input type="number" id="passwordLength" value="12" min="4" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="includeUppercase" checked> أحرف كبيرة</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="includeLowercase" checked> أحرف صغيرة</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="includeNumbers" checked> أرقام</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="includeSymbols" checked> رموز خاصة</label>
+                        </div>
+                        <button onclick="generatePassword()">توليد كلمة مرور</button>
+                        <div id="passwordResult" class="result" style="display: none;"></div>
+                    </div>
+
+                    <!-- JSON Validator -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">مدقق JSON</h3>
+                        <p class="tool-description">التحقق من صحة بيانات JSON وتنسيقها</p>
+                        <div class="form-group">
+                            <label>كود JSON:</label>
+                            <textarea id="jsonInput" rows="6" class="code-input" placeholder='{"name": "أحمد", "age": 25}'></textarea>
+                        </div>
+                        <button onclick="validateJSON()">فحص JSON</button>
+                        <div id="jsonResult" class="result" style="display: none;"></div>
+                    </div>
+
+                    <!-- QR Code Generator -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">مولد QR Code</h3>
+                        <p class="tool-description">إنشاء رموز QR للنصوص والروابط</p>
+                        <div class="form-group">
+                            <label>النص أو الرابط:</label>
+                            <input type="text" id="qrText" placeholder="أدخل النص أو الرابط">
+                        </div>
+                        <button onclick="generateQR()">إنشاء QR Code</button>
+                        <div id="qrcode"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- References Section -->
+            <section id="references" class="section">
+                <div class="reference-grid">
+                    <div class="reference-card">
+                        <h3 class="reference-title">HTML الأساسي</h3>
+                        <div class="reference-item">&lt;h1&gt; - &lt;h6&gt; العناوين</div>
+                        <div class="reference-item">&lt;p&gt; الفقرات</div>
+                        <div class="reference-item">&lt;div&gt; حاوي عام</div>
+                        <div class="reference-item">&lt;span&gt; عنصر مضمن</div>
+                        <div class="reference-item">&lt;a href=""&gt; الروابط</div>
+                        <div class="reference-item">&lt;img src=""&gt; الصور</div>
+                        <div class="reference-item">&lt;ul&gt;&lt;li&gt; قوائم غير مرقمة</div>
+                        <div class="reference-item">&lt;ol&gt;&lt;li&gt; قوائم مرقمة</div>
+                    </div>
+
+                    <div class="reference-card">
+                        <h3 class="reference-title">CSS الأساسي</h3>
+                        <div class="reference-item">color: لون النص</div>
+                        <div class="reference-item">background-color: لون الخلفية</div>
+                        <div class="reference-item">font-size: حجم الخط</div>
+                        <div class="reference-item">margin: الهامش الخارجي</div>
+                        <div class="reference-item">padding: الهامش الداخلي</div>
+                        <div class="reference-item">border: الحدود</div>
+                        <div class="reference-item">display: نوع العرض</div>
+                        <div class="reference-item">position: الموضع</div>
+                    </div>
+
+                    <div class="reference-card">
+                        <h3 class="reference-title">JavaScript الأساسي</h3>
+                        <div class="reference-item">console.log() طباعة في وحدة التحكم</div>
+                        <div class="reference-item">document.getElementById() الحصول على عنصر</div>
+                        <div class="reference-item">addEventListener() إضافة مستمع حدث</div>
+                        <div class="reference-item">parseInt() تحويل لرقم صحيح</div>
+                        <div class="reference-item">JSON.parse() تحليل JSON</div>
+                        <div class="reference-item">JSON.stringify() تحويل لـ JSON</div>
+                        <div class="reference-item">setTimeout() تأخير التنفيذ</div>
+                        <div class="reference-item">fetch() طلبات HTTP</div>
+                    </div>
+
+                    <div class="reference-card">
+                        <h3 class="reference-title">أوامر Git الأساسية</h3>
+                        <div class="reference-item">git init إنشاء مستودع جديد</div>
+                        <div class="reference-item">git add . إضافة جميع الملفات</div>
+                        <div class="reference-item">git commit -m "message" حفظ التغييرات</div>
+                        <div class="reference-item">git push رفع التغييرات</div>
+                        <div class="reference-item">git pull سحب التحديثات</div>
+                        <div class="reference-item">git status حالة المستودع</div>
+                        <div class="reference-item">git branch إدارة الفروع</div>
+                        <div class="reference-item">git merge دمج الفروع</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Converters Section -->
+            <section id="converters" class="section">
+                <div class="tools-grid">
+                    <!-- Color Converter -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">محول الألوان</h3>
+                        <p class="tool-description">تحويل بين أنظمة الألوان المختلفة</p>
+                        <div class="form-group">
+                            <label>كود اللون (HEX):</label>
+                            <input type="text" id="colorInput" placeholder="#FF5733" maxlength="7">
+                        </div>
+                        <button onclick="convertColor()">تحويل اللون</button>
+                        <div id="colorResult" class="result" style="display: none;"></div>
+                        <div id="colorDisplay" class="color-display" style="display: none;"></div>
+                    </div>
+
+                    <!-- Unit Converter -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">محول وحدات CSS</h3>
+                        <p class="tool-description">تحويل بين وحدات CSS المختلفة</p>
+                        <div class="form-group">
+                            <label>القيمة:</label>
+                            <input type="number" id="unitValue" placeholder="16">
+                        </div>
+                        <div class="form-group">
+                            <label>من:</label>
+                            <select id="fromUnit">
+                                <option value="px">px</option>
+                                <option value="em">em</option>
+                                <option value="rem">rem</option>
+                                <option value="pt">pt</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>إلى:</label>
+                            <select id="toUnit">
+                                <option value="px">px</option>
+                                <option value="em">em</option>
+                                <option value="rem">rem</option>
+                                <option value="pt">pt</option>
+                            </select>
+                        </div>
+                        <button onclick="convertUnit()">تحويل الوحدة</button>
+                        <div id="unitResult" class="result" style="display: none;"></div>
+                    </div>
+
+                    <!-- Code Minifier -->
+                    <div class="tool-card">
+                        <h3 class="tool-title">ضاغط الكود</h3>
+                        <p class="tool-description">تصغير وضغط كود HTML/CSS/JS</p>
+                        <div class="form-group">
+                            <label>نوع الكود:</label>
+                            <select id="codeType">
+                                <option value="css">CSS</option>
+                                <option value="js">JavaScript</option>
+                                <option value="html">HTML</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الكود:</label>
+                            <textarea id="codeInput" rows="6" class="code-input" placeholder="أدخل الكود هنا..."></textarea>
+                        </div>
+                        <button onclick="minifyCode()">ضغط الكود</button>
+                        <div id="codeResult" class="result" style="display: none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section id="resources" class="section">
+                <div class="resource-category">
+                    <h3>🌐 مواقع تعليمية</h3>
+                    <div class="resource-list">
+                        <div class="resource-item">
+                            <a href="https://www.w3schools.com" class="resource-link" target="_blank">W3Schools</a>
+                            <p>مرجع شامل لتعلم HTML, CSS, JavaScript وتقنيات الويب</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://developer.mozilla.org" class="resource-link" target="_blank">MDN Web Docs</a>
+                            <p>التوثيق الرسمي لتقنيات الويب من Mozilla</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://www.codecademy.com" class="resource-link" target="_blank">Codecademy</a>
+                            <p>دورات تفاعلية لتعلم البرمجة</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://www.freecodecamp.org" class="resource-link" target="_blank">freeCodeCamp</a>
+                            <p>منصة مجانية لتعلم البرمجة مع مشاريع عملية</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-category">
+                    <h3>📚 كتب مجانية</h3>
+                    <div class="resource-list">
+                        <div class="resource-item">
+                            <a href="https://eloquentjavascript.net" class="resource-link" target="_blank">Eloquent JavaScript</a>
+                            <p>كتاب شامل لتعلم JavaScript من الأساسيات إلى المستوى المتقدم</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://github.com/getify/You-Dont-Know-JS" class="resource-link" target="_blank">You Don't Know JS</a>
+                            <p>سلسلة كتب متقدمة لفهم JavaScript بعمق</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://www.learnenough.com/git-tutorial" class="resource-link" target="_blank">Learn Enough Git</a>
+                            <p>دليل شامل لتعلم Git من الصفر</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-category">
+                    <h3>🎥 قنوات يوتيوب عربية</h3>
+                    <div class="resource-list">
+                        <div class="resource-item">
+                            <a href="https://www.youtube.com/@ElzeroWebSchool" class="resource-link" target="_blank">Elzero Web School</a>
+                            <p>دورات شاملة في تطوير الويب والبرمجة باللغة العربية</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://www.youtube.com/@codezilla" class="resource-link" target="_blank">Codezilla</a>
+                            <p>دروس برمجة متنوعة وشروحات تقنية</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://www.youtube.com/@TheNewBaghdad" class="resource-link" target="_blank">The New Baghdad</a>
+                            <p>محتوى تقني ودروس برمجة باللغة العربية</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-category">
+                    <h3>🛠️ أدوات مفيدة</h3>
+                    <div class="resource-list">
+                        <div class="resource-item">
+                            <a href="https://codepen.io" class="resource-link" target="_blank">CodePen</a>
+                            <p>محرر كود أونلاين لتجربة HTML, CSS, JavaScript</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://github.com" class="resource-link" target="_blank">GitHub</a>
+                            <p>منصة لاستضافة المشاريع والتعاون في البرمجة</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://stackoverflow.com" class="resource-link" target="_blank">Stack Overflow</a>
+                            <p>منصة الأسئلة والأجوبة للمبرمجين</p>
+                        </div>
+                        <div class="resource-item">
+                            <a href="https://www.figma.com" class="resource-link" target="_blank">Figma</a>
+                            <p>أداة تصميم واجهات المستخدم والنماذج الأولية</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Programming Calculator
+        function convertNumber() {
+            const number = document.getElementById('numberInput').value;
+            const fromBase = parseInt(document.getElementById('fromBase').value);
+            const resultDiv = document.getElementById('numberResult');
+            
+            if (!number) {
+                alert('يرجى إدخال رقم');
+                return;
+            }
+            
+            try {
+                const decimal = parseInt(number, fromBase);
+                if (isNaN(decimal)) {
+                    throw new Error('رقم غير صحيح');
+                }
+                
+                const binary = decimal.toString(2);
+                const octal = decimal.toString(8);
+                const hex = decimal.toString(16).toUpperCase();
+                
+                resultDiv.innerHTML = `
+                    <strong>النتائج:</strong><br>
+                    عشري (Decimal): ${decimal}<br>
+                    ثنائي (Binary): ${binary}<br>
+                    ثماني (Octal): ${octal}<br>
+                    سادس عشر (Hex): ${hex}
+                `;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                alert('خطأ في التحويل: ' + error.message);
+            }
+        }
+
+        // Password Generator
+        function generatePassword() {
+            const length = parseInt(document.getElementById('passwordLength').value);
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+            
+            let charset = '';
+            if (includeUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (includeLowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
+            if (includeNumbers) charset += '0123456789';
+            if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            if (charset === '') {
+                alert('يرجى اختيار نوع واحد على الأقل من الأحرف');
+                return;
+            }
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+            
+            const resultDiv = document.getElementById('passwordResult');
+            resultDiv.innerHTML = `<strong>كلمة المرور المولدة:</strong><br>${password}`;
+            resultDiv.style.display = 'block';
+        }
+
+        // JSON Validator
+        function validateJSON() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            const resultDiv = document.getElementById('jsonResult');
+            
+            if (!jsonInput.trim()) {
+                alert('يرجى إدخال كود JSON');
+                return;
+            }
+            
+            try {
+                const parsed = JSON.parse(jsonInput);
+                const formatted = JSON.stringify(parsed, null, 2);
+                resultDiv.innerHTML = `<span class="json-valid">✅ JSON صحيح</span><br><br><strong>JSON منسق:</strong><br><pre>${formatted}</pre>`;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="json-invalid">❌ JSON غير صحيح</span><br><br><strong>الخطأ:</strong><br>${error.message}`;
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        // QR Code Generator (Simple implementation)
+        function generateQR() {
+            const text = document.getElementById('qrText').value;
+            const qrDiv = document.getElementById('qrcode');
+            
+            if (!text.trim()) {
+                alert('يرجى إدخال نص أو رابط');
+                return;
+            }
+            
+            // Using a simple QR code API
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
+            qrDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" style="max-width: 100%; border: 1px solid #e5e7eb; border-radius: 8px;">`;
+        }
+
+        // Color Converter
+        function convertColor() {
+            const colorInput = document.getElementById('colorInput').value;
+            const resultDiv = document.getElementById('colorResult');
+            const displayDiv = document.getElementById('colorDisplay');
+            
+            if (!colorInput.match(/^#[0-9A-Fa-f]{6}$/)) {
+                alert('يرجى إدخال كود لون صحيح (مثال: #FF5733)');
+                return;
+            }
+            
+            const hex = colorInput.toUpperCase();
+            const r = parseInt(hex.substr(1, 2), 16);
+            const g = parseInt(hex.substr(3, 2), 16);
+            const b = parseInt(hex.substr(5, 2), 16);
+            
+            const hsl = rgbToHsl(r, g, b);
+            
+            resultDiv.innerHTML = `
+                <strong>نتائج التحويل:</strong><br>
+                HEX: ${hex}<br>
+                RGB: rgb(${r}, ${g}, ${b})<br>
+                HSL: hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)
+            `;
+            resultDiv.style.display = 'block';
+            
+            displayDiv.style.backgroundColor = hex;
+            displayDiv.style.display = 'block';
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            
+            return {
+                h: Math.round(h * 360),
+                s: Math.round(s * 100),
+                l: Math.round(l * 100)
+            };
+        }
+
+        // Unit Converter
+        function convertUnit() {
+            const value = parseFloat(document.getElementById('unitValue').value);
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            const resultDiv = document.getElementById('unitResult');
+            
+            if (isNaN(value)) {
+                alert('يرجى إدخال قيمة صحيحة');
+                return;
+            }
+            
+            // Base conversion to px (assuming 16px = 1rem = 1em, 1pt = 1.33px)
+            let pxValue;
+            switch (fromUnit) {
+                case 'px': pxValue = value; break;
+                case 'em': pxValue = value * 16; break;
+                case 'rem': pxValue = value * 16; break;
+                case 'pt': pxValue = value * 1.33; break;
+            }
+            
+            let result;
+            switch (toUnit) {
+                case 'px': result = pxValue; break;
+                case 'em': result = pxValue / 16; break;
+                case 'rem': result = pxValue / 16; break;
+                case 'pt': result = pxValue / 1.33; break;
+            }
+            
+            resultDiv.innerHTML = `<strong>النتيجة:</strong><br>${value}${fromUnit} = ${result.toFixed(2)}${toUnit}`;
+            resultDiv.style.display = 'block';
+        }
+
+        // Code Minifier (Basic implementation)
+        function minifyCode() {
+            const code = document.getElementById('codeInput').value;
+            const codeType = document.getElementById('codeType').value;
+            const resultDiv = document.getElementById('codeResult');
+            
+            if (!code.trim()) {
+                alert('يرجى إدخال الكود');
+                return;
+            }
+            
+            let minified;
+            switch (codeType) {
+                case 'css':
+                    minified = code
+                        .replace(/\/\*[\s\S]*?\*\//g, '')
+                        .replace(/\s+/g, ' ')
+                        .replace(/;\s*}/g, '}')
+                        .replace(/\s*{\s*/g, '{')
+                        .replace(/;\s*/g, ';')
+                        .trim();
+                    break;
+                case 'js':
+                    minified = code
+                        .replace(/\/\*[\s\S]*?\*\//g, '')
+                        .replace(/\/\/.*$/gm, '')
+                        .replace(/\s+/g, ' ')
+                        .replace(/\s*([{}();,])\s*/g, '$1')
+                        .trim();
+                    break;
+                case 'html':
+                    minified = code
+                        .replace(/<!--[\s\S]*?-->/g, '')
+                        .replace(/\s+/g, ' ')
+                        .replace(/>\s*</g, '><')
+                        .trim();
+                    break;
+            }
+            
+            const originalSize = new Blob([code]).size;
+            const minifiedSize = new Blob([minified]).size;
+            const savings = ((originalSize - minifiedSize) / originalSize * 100).toFixed(1);
+            
+            resultDiv.innerHTML = `
+                <strong>الكود المضغوط:</strong><br>
+                <pre style="white-space: pre-wrap; word-break: break-all;">${minified}</pre>
+                <br><strong>إحصائيات:</strong><br>
+                الحجم الأصلي: ${originalSize} بايت<br>
+                الحجم بعد الضغط: ${minifiedSize} بايت<br>
+                نسبة التوفير: ${savings}%
+            `;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
